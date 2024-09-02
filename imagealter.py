@@ -77,31 +77,31 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                 input_image = gr.Image(height="50vh", show_label=False)
 
             with gr.Column(scale=3, show_progress=True, variant="compact"):
-                t2i_num_images = gr.Slider(minimum=1, maximum=5, value=1, step=1,
+                i2i_num_images = gr.Slider(minimum=1, maximum=5, value=1, step=1,
                                            label="Number of Images to Generate",
                                            info="How many images you want the model to generate.",
                                            interactive=True)
-                t2i_num_inference_steps = gr.Slider(minimum=1, maximum=100, value=75, step=1,
+                i2i_num_inference_steps = gr.Slider(minimum=1, maximum=100, value=75, step=1,
                                                     label="Number of Inference Steps",
                                                     info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number",
                                                     interactive=True)
-                t2i_strength = gr.Slider(minimum=0, maximum=1, value=.75, step=.01,
+                i2i_strength = gr.Slider(minimum=0, maximum=1, value=.75, step=.01,
                                          label="Strength",
                                          info="How much noise gets add to the photo or how much the photo changes.",
                                          interactive=True)
-                t2i_guidance_scale = gr.Slider(minimum=0, maximum=30, value=7.5, step=0.1,
+                i2i_guidance_scale = gr.Slider(minimum=0, maximum=30, value=7.5, step=0.1,
                                                label="Guidance Scale",
                                                info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt.",
                                                interactive=True)
-                t2i_chatbot = gr.Chatbot(height="25.5vh", show_label=False)
-                t2i_prompt = gr.Textbox(label="Image Prompt", placeholder="Enter image edit prompt...", autoscroll=True)
+                i2i_chatbot = gr.Chatbot(height="25.5vh", show_label=False)
+                i2i_prompt = gr.Textbox(label="Image Prompt", placeholder="Enter image edit prompt...", autoscroll=True)
 
             with gr.Column(scale=4, show_progress=True):
                 gr.Markdown("## <center>Output Image</center>")
-                t2i_output_image = gr.Image(height="50vh", show_label=False, interactive=False)
+                i2i_output_image = gr.Image(height="50vh", show_label=False, interactive=False)
 
         gr.Markdown("# <center>Output Image Gallery</center>")
-        t2i_output_gallery = gr.Gallery(height="30vh",
+        i2i_output_gallery = gr.Gallery(height="30vh",
                                         rows=[6],
                                         columns=[3],
                                         show_download_button=True,
@@ -112,15 +112,15 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                                         object_fit="contain",
                                         interactive=False)
 
-        t2i_prompt.submit(
+        i2i_prompt.submit(
             fn=image_to_image,
-            inputs=[input_image, t2i_prompt, t2i_num_images, t2i_num_inference_steps, t2i_strength, t2i_guidance_scale],
-            outputs=[t2i_output_image, t2i_output_gallery, t2i_chatbot],
+            inputs=[input_image, i2i_prompt, i2i_num_images, i2i_num_inference_steps, i2i_strength, i2i_guidance_scale],
+            outputs=[i2i_output_image, i2i_output_gallery, i2i_chatbot],
             postprocess=False
         ).then(
             fn=update_chatbot,
-            inputs=[t2i_chatbot, t2i_prompt],
-            outputs=[t2i_chatbot]
+            inputs=[i2i_chatbot, i2i_prompt],
+            outputs=[i2i_chatbot]
         )
 
 demo.launch(inbrowser=True)
