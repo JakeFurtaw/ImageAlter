@@ -17,6 +17,10 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
     gr.Markdown("# <center>Image Alter</center>")
     gr.Markdown("### <center>This app is used to create and edit images using Stable Diffusion.</center>")
 
+    # State variables to store accumulated images
+    text_to_image_gallery = gr.State([])
+    image_to_image_gallery = gr.State([])
+
     with gr.Tab("Text to Image"):
         with gr.Row():
             with gr.Column(scale=2, show_progress=True, variant="compact"):
@@ -24,15 +28,11 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                                        label="Number of Images to Generate",
                                        info="How many images you want the model to generate.",
                                        interactive=True)
-                num_inference_steps = gr.Slider(minimum=1, maximum=100, value=75, step=1,
+                num_inference_steps = gr.Slider(minimum=1, maximum=1000, value=75, step=1,
                                                 label="Number of Inference Steps",
                                                 info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number",
                                                 interactive=True)
-                strength = gr.Slider(minimum=0, maximum=1, value=.75, step=.01,
-                                     label="Strength",
-                                     info="How much noise gets add to the photo or how much the photo changes.",
-                                     interactive=True)
-                guidance_scale = gr.Slider(minimum=0, maximum=30, value=7.5, step=0.1,
+                guidance_scale = gr.Slider(minimum=0, maximum=100, value=7.5, step=0.5,
                                            label="Guidance Scale",
                                            info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt.",
                                            interactive=True)
@@ -60,17 +60,17 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                                     interactive=False)
 
 
-        def process_text_to_image(prompt, num_images, num_inference_steps, strength, guidance_scale, history):
-            single_image, all_images, new_history = text_to_image(prompt, num_images, num_inference_steps, strength,
-                                                                  guidance_scale)
+        def process_text_to_image(prompt, num_images, num_inference_steps, guidance_scale, history, gallery):
+            single_image, new_images, new_history = text_to_image(prompt, num_images, num_inference_steps, guidance_scale)
             updated_history = history + new_history
-            return single_image, all_images, updated_history
+            updated_gallery = gallery + new_images
+            return single_image, updated_gallery, updated_history, updated_gallery
 
 
         prompt.submit(
             fn=process_text_to_image,
-            inputs=[prompt, num_images, num_inference_steps, strength, guidance_scale, chatbot],
-            outputs=[output_image, output_gallery, chatbot]
+            inputs=[prompt, num_images, num_inference_steps, guidance_scale, chatbot, text_to_image_gallery],
+            outputs=[output_image, output_gallery, chatbot, text_to_image_gallery]
         ).then(
             fn=update_chatbot,
             inputs=[chatbot, prompt],
@@ -88,7 +88,7 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                                            label="Number of Images to Generate",
                                            info="How many images you want the model to generate.",
                                            interactive=True)
-                i2i_num_inference_steps = gr.Slider(minimum=1, maximum=100, value=75, step=1,
+                i2i_num_inference_steps = gr.Slider(minimum=1, maximum=1000, value=75, step=1,
                                                     label="Number of Inference Steps",
                                                     info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number",
                                                     interactive=True)
@@ -96,7 +96,7 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                                          label="Strength",
                                          info="How much noise gets add to the photo or how much the photo changes.",
                                          interactive=True)
-                i2i_guidance_scale = gr.Slider(minimum=0, maximum=30, value=7.5, step=0.1,
+                i2i_guidance_scale = gr.Slider(minimum=0, maximum=100, value=7.5, step=0.5,
                                                label="Guidance Scale",
                                                info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt.",
                                                interactive=True)
@@ -121,18 +121,19 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
 
 
         def process_image_to_image(init_image, prompt, num_images, num_inference_steps, strength, guidance_scale,
-                                   history):
-            single_image, all_images, new_history = image_to_image(init_image, prompt, num_images, num_inference_steps,
+                                   history, gallery):
+            single_image, new_images, new_history = image_to_image(init_image, prompt, num_images, num_inference_steps,
                                                                    strength, guidance_scale)
             updated_history = history + new_history
-            return single_image, all_images, updated_history
+            updated_gallery = gallery + new_images
+            return single_image, updated_gallery, updated_history, updated_gallery
 
 
         i2i_prompt.submit(
             fn=process_image_to_image,
             inputs=[input_image, i2i_prompt, i2i_num_images, i2i_num_inference_steps, i2i_strength, i2i_guidance_scale,
-                    i2i_chatbot],
-            outputs=[i2i_output_image, i2i_output_gallery, i2i_chatbot]
+                    i2i_chatbot, image_to_image_gallery],
+            outputs=[i2i_output_image, i2i_output_gallery, i2i_chatbot, image_to_image_gallery]
         ).then(
             fn=update_chatbot,
             inputs=[i2i_chatbot, i2i_prompt],

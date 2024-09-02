@@ -18,12 +18,11 @@ refiner_model = StableDiffusionXLPipeline.from_pretrained(
     variant="fp16"
 )
 
-def text_to_image(prompt, num_images, num_inference_steps, strength, guidance_scale):
+def text_to_image(prompt, num_images, num_inference_steps, guidance_scale):
     images = base_model(
         prompt,
         num_inference_steps=num_inference_steps,
         guidance_scale=guidance_scale,
-        strength=strength,
         num_images_per_prompt=num_images
     ).images
     return images[0], images, [(None, f"Generated image(s) for prompt: {prompt}")]
