@@ -12,7 +12,7 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
     with gr.Tab("Text to Image"):
         with gr.Row():
             with gr.Column(scale=2, show_progress=True, variant="compact"):
-                num_images = gr.Slider(minimum=1, maximum=5, value=1, step=1,
+                num_images = gr.Slider(minimum=1, maximum=5, value=3, step=1,
                                        label="Number of Images to Generate",
                                        info="How many images you want the model to generate.",
                                        interactive=True)
@@ -29,11 +29,15 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                                          label="Guidance Scale",
                                          info="How close the image should be to the original.",
                                          interactive=True)
-                gr.Chatbot(height="50vh", show_label=False)
-                prompt = gr.Textbox(label="Image Prompt", placeholder="Enter image edit prompt...")
+                chatbot=gr.Chatbot(height="44.5vh", show_label=False)
+                prompt=gr.Textbox(label="Image Prompt", placeholder="Enter image edit prompt...")
             with gr.Column(scale=4, show_progress=True):
                 gr.Markdown("## <center>Output Image</center>")
-                gr.Image(height="70vh", show_label=False, interactive=False)
+                gr.Image(height="70vh",
+                         show_label=False,
+                         interactive=False,
+                         show_download_button=True,
+                         show_fullscreen_button=True)
         gr.Markdown("# <center>Output Image Gallery</center>")
         gr.Tabs()
         gr.Gallery(height="500",
@@ -44,7 +48,8 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                    preview=True,
                    label="Output Image Gallery",
                    show_label=False,
-                   object_fit="contain")
+                   object_fit="contain",
+                   interactive=False)
     with gr.Tab("Image to Image"):
         with gr.Row():
             with gr.Column(scale=4, show_progress=True):
@@ -70,8 +75,8 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                                              label="Guidance Steps",
                                              info="How much noise gets add to the photo or how much the photo changes.",
                                              interactive=True)
-                gr.Chatbot(height="30vh", show_label=False)
-                t2i_prompt = gr.Textbox(label="Image Prompt",placeholder="Enter image edit prompt...")
+                t2i_chatbot=gr.Chatbot(height="25.5vh", show_label=False)
+                t2i_prompt=gr.Textbox(label="Image Prompt",placeholder="Enter image edit prompt...", autoscroll=True)
             with gr.Column(scale=4, show_progress=True):
                 gr.Markdown("## <center>Output Image</center>")
                 gr.Tabs()
@@ -86,7 +91,8 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                    preview=True,
                    label="Output Image Gallery",
                    show_label=False,
-                   object_fit="contain")
+                   object_fit="contain",
+                   interactive=False)
 
 
     demo.launch(inbrowser=True)
