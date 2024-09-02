@@ -2,6 +2,7 @@ import numpy as np
 import torch
 from diffusers import FluxPipeline, DiffusionPipeline
 import random
+import PIL.Image
 
 MAX_SEED = np.iinfo(np.int32).max
 
@@ -29,11 +30,11 @@ def text_to_image(prompt, height, width, num_images, num_inference_steps, guidan
         guidance_scale=guidance_scale,
         num_images_per_prompt=num_images,
         max_sequence_length=256,
-        generator=torch.Generator("cuda").manual_seed(seed)
+        generator=torch.Generator("cuda:1").manual_seed(seed)
     ).images
-    return image[0], image, [(None, f"Generated image(s) for prompt: {prompt}")]
+    return image, image, [(None, f"Generated image(s) for prompt: {prompt}")]
 
-def image_to_image( prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale):
+def image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale):
     seed = random.randint(0, MAX_SEED)
     base_output = refiner(
         prompt,

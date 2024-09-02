@@ -50,14 +50,16 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
                                       label="Height",
                                       info="Height of the generated Image",
                                       interactive=True)
-            gr.Column(scale=1)
             with gr.Column(scale=126, show_progress=True):
-                gr.Markdown("## <center>Output Image</center>")
-                output_image = gr.Image(height="60vh",
-                                        show_label=False,
-                                        interactive=False,
-                                        show_download_button=True,
-                                        show_fullscreen_button=True)
+                gr.Markdown("## <center>Output Image(s)</center>")
+                output_image = gr.Gallery(height="auto",
+                                          rows=[1],
+                                          columns=[num_images.value],
+                                          show_label=False,
+                                          interactive=False,
+                                          object_fit="contain",
+                                          show_download_button=True,
+                                          show_fullscreen_button=True)
 
         gr.Markdown("# <center>Output Image Gallery</center>")
         output_gallery = gr.Gallery(height="auto",
