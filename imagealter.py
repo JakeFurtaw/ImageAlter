@@ -13,13 +13,18 @@ def update_chatbot(history, message):
     return history
 
 
-with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
+with gr.Blocks(title="Image Alter",
+               theme="default",
+               fill_width=True,
+               css=css) as demo:
     gr.Markdown("# <center>Image Alter</center>")
     gr.Markdown("### <center>This app is used to create and edit images using Stable Diffusion.</center>")
 
     with gr.Tab("Text to Image"):
         with gr.Row():
-            with gr.Column(scale=2, show_progress=True, variant="compact"):
+            with gr.Column(scale=2,
+                           show_progress=True,
+                           variant="compact"):
                 num_images = gr.Slider(minimum=1, maximum=5, value=3, step=1,
                                        label="Number of Images to Generate",
                                        info="How many images you want the model to generate.",
@@ -36,8 +41,11 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                                            label="Guidance Scale",
                                            info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt.",
                                            interactive=True)
-                chatbot = gr.Chatbot(height="44.5vh", show_label=False)
-                prompt = gr.Textbox(label="Image Prompt", placeholder="Enter image prompt...")
+                chatbot = gr.Chatbot(height="44.5vh",
+                                     show_label=False,
+                                     show_copy_button=True)
+                prompt = gr.Textbox(label="Image Prompt",
+                                    placeholder="Enter image prompt...")
 
             with gr.Column(scale=4, show_progress=True):
                 gr.Markdown("## <center>Output Image</center>")
@@ -76,7 +84,9 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                 gr.Markdown("## <center>Input Image</center>")
                 input_image = gr.Image(height="50vh", show_label=False)
 
-            with gr.Column(scale=3, show_progress=True, variant="compact"):
+            with gr.Column(scale=3,
+                           show_progress=True,
+                           variant="compact"):
                 i2i_num_images = gr.Slider(minimum=1, maximum=5, value=1, step=1,
                                            label="Number of Images to Generate",
                                            info="How many images you want the model to generate.",
@@ -93,8 +103,12 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                                                label="Guidance Scale",
                                                info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt.",
                                                interactive=True)
-                i2i_chatbot = gr.Chatbot(height="25.5vh", show_label=False)
-                i2i_prompt = gr.Textbox(label="Image Prompt", placeholder="Enter image edit prompt...", autoscroll=True)
+                i2i_chatbot = gr.Chatbot(height="25.5vh",
+                                         show_label=False,
+                                         show_copy_button=True)
+                i2i_prompt = gr.Textbox(label="Image Prompt",
+                                        placeholder="Enter image edit prompt...",
+                                        autoscroll=True)
 
             with gr.Column(scale=4, show_progress=True):
                 gr.Markdown("## <center>Output Image</center>")
