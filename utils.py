@@ -21,6 +21,8 @@ refiner_model = StableDiffusionXLPipeline.from_pretrained(
 def text_to_image(prompt, num_images, num_inference_steps, guidance_scale):
     images = base_model(
         prompt,
+        height=1024,
+        width=1024,
         num_inference_steps=num_inference_steps,
         guidance_scale=guidance_scale,
         num_images_per_prompt=num_images

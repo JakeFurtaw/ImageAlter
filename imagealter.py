@@ -13,7 +13,7 @@ def update_chatbot(history, user_message):
     return history
 
 
-with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
+with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as demo:
     gr.Markdown("# <center>Image Alter</center>")
     gr.Markdown("### <center>This app is used to create and edit images using Stable Diffusion.</center>")
 
@@ -48,12 +48,11 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                                         show_fullscreen_button=True)
 
         gr.Markdown("# <center>Output Image Gallery</center>")
-        output_gallery = gr.Gallery(height="500",
+        output_gallery = gr.Gallery(height="auto",
                                     rows=[6],
                                     columns=[3],
                                     show_download_button=True,
                                     show_fullscreen_button=True,
-                                    preview=True,
                                     label="Output Image Gallery",
                                     show_label=False,
                                     object_fit="contain",
@@ -108,7 +107,7 @@ with gr.Blocks(theme="default", fill_width=True, css=css) as demo:
                 i2i_output_image = gr.Image(height="50vh", show_label=False, interactive=False)
 
         gr.Markdown("# <center>Output Image Gallery</center>")
-        i2i_output_gallery = gr.Gallery(height="30vh",
+        i2i_output_gallery = gr.Gallery(height="auto",
                                         rows=[6],
                                         columns=[3],
                                         show_download_button=True,
