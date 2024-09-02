@@ -28,11 +28,11 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
                                        label="Number of Images to Generate",
                                        info="How many images you want the model to generate.",
                                        interactive=True)
-                num_inference_steps = gr.Slider(minimum=1, maximum=1000, value=75, step=1,
+                num_inference_steps = gr.Slider(minimum=1, maximum=24, value=4, step=1,
                                                 label="Number of Inference Steps",
                                                 info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number",
                                                 interactive=True)
-                guidance_scale = gr.Slider(minimum=0, maximum=100, value=7.5, step=0.5,
+                guidance_scale = gr.Slider(minimum=0.0, maximum=5, value=0.0, step=0.1,
                                            label="Guidance Scale",
                                            info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt.",
                                            interactive=True)
