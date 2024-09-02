@@ -109,29 +109,39 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
                                            info="How many images you want the model to generate.",
                                            interactive=True)
                     i2i_num_inference_steps = gr.Slider(minimum=1, maximum=24, value=4, step=1,
-                                                    label="Number of Inference Steps",
-                                                    info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number",
-                                                    interactive=True)
+                                                        label="Number of Inference Steps",
+                                                        info="Selected how many steps the model takes to make the image "
+                                                         "higher quality. Takes longer for inference higher you "
+                                                         "make the number.",
+                                                        interactive=True)
                     i2i_guidance_scale = gr.Slider(minimum=0.0, maximum=5, value=0.0, step=0.1,
-                                               label="Guidance Scale",
-                                               info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt.",
-                                               interactive=True)
+                                                   label="Guidance Scale",
+                                                   info="How closely the image should follow the prompt. Higher values "
+                                                   "make the image more closely follow the prompt but will loose image"
+                                                   " quality.",
+                                                   interactive=True)
                     i2i_height = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
-                                       label="Height",
-                                       info="Height of the generated Image",
-                                       interactive=True)
+                                           label="Height",
+                                           info="Height of the generated Image.",
+                                           interactive=True)
                     i2i_width = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
-                                      label="Height",
-                                      info="Height of the generated Image",
-                                      interactive=True)
+                                          label="Width",
+                                          info="Width of the generated Image.",
+                                          interactive=True)
             with gr.Column(scale=4, show_progress=True):
                 gr.Markdown("## <center>Output Image</center>")
-                i2i_output_image = gr.Image(height="50vh", show_label=False, interactive=False)
+                i2i_output_image = gr.Gallery(height="50vh",
+                                              rows=[1],
+                                              columns=[i2i_num_images.value],
+                                              object_fit="contain",
+                                              show_fullscreen_button=True,
+                                              show_label=False,
+                                              interactive=False)
 
         gr.Markdown("# <center>Output Image Gallery</center>")
         i2i_output_gallery = gr.Gallery(height="auto",
                                         rows=[6],
-                                        columns=[3],
+                                        columns=[i2i_num_images.value],
                                         show_download_button=True,
                                         show_fullscreen_button=True,
                                         preview=True,
