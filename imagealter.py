@@ -95,25 +95,29 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
                 input_image = gr.Image(height="50vh", show_label=False)
 
             with gr.Column(scale=3, show_progress=True, variant="compact"):
-                i2i_num_images = gr.Slider(minimum=1, maximum=5, value=1, step=1,
+                i2i_chatbot = gr.Chatbot(height="25.5vh", show_label=False)
+                i2i_prompt = gr.Textbox(label="Image Prompt", placeholder="Enter image edit prompt...", autoscroll=True)
+                with gr.Accordion(label="Advanced Settings"):
+                    i2i_num_images = gr.Slider(minimum=1, maximum=5, value=3, step=1,
                                            label="Number of Images to Generate",
                                            info="How many images you want the model to generate.",
                                            interactive=True)
-                i2i_num_inference_steps = gr.Slider(minimum=1, maximum=1000, value=75, step=1,
+                    i2i_num_inference_steps = gr.Slider(minimum=1, maximum=24, value=4, step=1,
                                                     label="Number of Inference Steps",
                                                     info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number",
                                                     interactive=True)
-                i2i_strength = gr.Slider(minimum=0, maximum=1, value=.75, step=.01,
-                                         label="Strength",
-                                         info="How much noise gets add to the photo or how much the photo changes.",
-                                         interactive=True)
-                i2i_guidance_scale = gr.Slider(minimum=0, maximum=100, value=7.5, step=0.5,
+                    i2i_guidance_scale = gr.Slider(minimum=0.0, maximum=5, value=0.0, step=0.1,
                                                label="Guidance Scale",
                                                info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt.",
                                                interactive=True)
-                i2i_chatbot = gr.Chatbot(height="25.5vh", show_label=False)
-                i2i_prompt = gr.Textbox(label="Image Prompt", placeholder="Enter image edit prompt...", autoscroll=True)
-
+                    i2i_height = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
+                                       label="Height",
+                                       info="Height of the generated Image",
+                                       interactive=True)
+                    i2i_width = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
+                                      label="Height",
+                                      info="Height of the generated Image",
+                                      interactive=True)
             with gr.Column(scale=4, show_progress=True):
                 gr.Markdown("## <center>Output Image</center>")
                 i2i_output_image = gr.Image(height="50vh", show_label=False, interactive=False)
@@ -131,10 +135,9 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
                                         interactive=False)
 
 
-        def process_image_to_image(init_image, prompt, num_images, num_inference_steps, strength, guidance_scale,
+        def process_image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale,
                                    history, gallery):
-            single_image, new_images, new_history = image_to_image(init_image, prompt, num_images, num_inference_steps,
-                                                                   strength, guidance_scale)
+            single_image, new_images, new_history = image_to_image(prompt, height, width, init_image, num_images, num_inference_steps, guidance_scale)
             updated_history = history + new_history
             updated_gallery = gallery + new_images
             return single_image, updated_gallery, updated_history, updated_gallery
@@ -142,7 +145,7 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
 
         i2i_prompt.submit(
             fn=process_image_to_image,
-            inputs=[input_image, i2i_prompt, i2i_num_images, i2i_num_inference_steps, i2i_strength, i2i_guidance_scale,
+            inputs=[i2i_prompt, input_image, i2i_height, i2i_width, i2i_num_images, i2i_num_inference_steps, i2i_guidance_scale,
                     i2i_chatbot, image_to_image_gallery],
             outputs=[i2i_output_image, i2i_output_gallery, i2i_chatbot, image_to_image_gallery]
         ).then(

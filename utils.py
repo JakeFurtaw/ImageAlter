@@ -29,13 +29,13 @@ def text_to_image(prompt, height, width, num_images, num_inference_steps, guidan
         guidance_scale=guidance_scale,
         num_images_per_prompt=num_images,
         max_sequence_length=256,
-        generator=torch.Generator("cuda:1").manual_seed(seed)
+        generator=torch.Generator("cuda").manual_seed(seed)
     ).images
     return image[0], image, [(None, f"Generated image(s) for prompt: {prompt}")]
 
-def image_to_image(init_image, prompt, height, width, num_images, num_inference_steps, guidance_scale):
+def image_to_image( prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale):
     seed = random.randint(0, MAX_SEED)
-    base_output = base_model(
+    base_output = refiner(
         prompt,
         image=init_image,
         height=height,
@@ -44,6 +44,6 @@ def image_to_image(init_image, prompt, height, width, num_images, num_inference_
         num_inference_steps=num_inference_steps,
         guidance_scale=guidance_scale,
         max_sequence_length=256,
-        generator=torch.Generator("cuda:1").manual_seed(seed)
+        generator=torch.Generator("cuda").manual_seed(seed)
     ).images
     return base_output[0], base_output, [(None, f"Generated image(s) for prompt: {prompt}")]
