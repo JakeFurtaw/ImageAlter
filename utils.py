@@ -26,7 +26,7 @@ def text_to_image(prompt, num_images, num_inference_steps, strength, guidance_sc
         strength=strength,
         num_images_per_prompt=num_images
     ).images
-    return images[0], images, f"Generated image(s) for prompt: {prompt}"
+    return images[0], images, [(None, f"Generated image(s) for prompt: {prompt}")]
 
 def image_to_image(init_image, prompt, num_images, num_inference_steps, strength, guidance_scale):
     base_output = base_model(
@@ -50,4 +50,4 @@ def image_to_image(init_image, prompt, num_images, num_inference_steps, strength
         num_images_per_prompt=num_images
     ).images
 
-    return refined_images[0], refined_images, f"Generated image(s) for prompt: {prompt}"
+    return refined_images[0], refined_images, [(None, f"Generated image(s) for prompt: {prompt}")]
