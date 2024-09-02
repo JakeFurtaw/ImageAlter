@@ -140,7 +140,7 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
 
         gr.Markdown("# <center>Output Image Gallery</center>")
         i2i_output_gallery = gr.Gallery(height="auto",
-                                        rows=[6],
+                                        rows=[10],
                                         columns=[i2i_num_images.value],
                                         show_download_button=True,
                                         show_fullscreen_button=True,

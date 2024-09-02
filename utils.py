@@ -1,8 +1,8 @@
 import numpy as np
 import torch
+from PIL import Image
 from diffusers import FluxPipeline, DiffusionPipeline
 import random
-import PIL.Image
 
 MAX_SEED = np.iinfo(np.int32).max
 
@@ -35,10 +35,11 @@ def text_to_image(prompt, height, width, num_images, num_inference_steps, guidan
     return image, image, [(None, f"Generating image(s) for prompt: {prompt}.....")]
 
 def image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale):
+    img= Image.open(init_image).convert("RGB").resize(height, width)
     seed = random.randint(0, MAX_SEED)
     base_output = refiner(
         prompt,
-        image=init_image,
+        image=img,
         height=height,
         width=width,
         num_images_per_prompt=num_images,
