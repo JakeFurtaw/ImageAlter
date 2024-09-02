@@ -36,19 +36,23 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
                                            interactive=True)
                     num_inference_steps = gr.Slider(minimum=1, maximum=24, value=4, step=1,
                                                     label="Number of Inference Steps",
-                                                    info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number",
+                                                    info="Selected how many steps the model takes to make the image "
+                                                         "higher quality. Takes longer for inference higher you "
+                                                         "make the number.",
                                                     interactive=True)
                     guidance_scale = gr.Slider(minimum=0.0, maximum=5, value=0.0, step=0.1,
                                                label="Guidance Scale",
-                                               info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt.",
+                                               info="How closely the image should follow the prompt. Higher values "
+                                                    "make the image more closely follow the prompt but will loose image"
+                                                    " quality.",
                                                interactive=True)
                     height = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
                                        label="Height",
-                                       info="Height of the generated Image",
+                                       info="Height of the generated Image.",
                                        interactive=True)
                     width = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
-                                      label="Height",
-                                      info="Height of the generated Image",
+                                      label="Width",
+                                      info="Width of the generated Image.",
                                       interactive=True)
             with gr.Column(scale=126, show_progress=True):
                 gr.Markdown("## <center>Output Image(s)</center>")
@@ -63,7 +67,7 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
 
         gr.Markdown("# <center>Output Image Gallery</center>")
         output_gallery = gr.Gallery(height="auto",
-                                    rows=[6],
+                                    rows=[10],
                                     columns=[num_images.value],
                                     show_download_button=True,
                                     show_fullscreen_button=True,
