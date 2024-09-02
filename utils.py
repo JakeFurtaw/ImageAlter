@@ -1,58 +1,53 @@
-from diffusers import StableDiffusionXLPipeline
-from diffusers.utils import load_image
 import torch
-from torch.utils.tensorboard.summary import image
+from diffusers import StableDiffusionXLPipeline
 
-"""------------Text to Image Pipeline------------"""
-
-pipe = StableDiffusionXLPipeline.from_pretrained(
-    model="stabilityai/sdxl-turbo",
-    device_map="auto",
-    torch_dtype=torch.float16,
-    use_safetensors=True,
-    variant="fp16")
-
-prompt = ""
-
-textToImage = pipe(prompt, num_inference_steps=70,
-                   guidance_scale=0.0,
-                   num_images_per_prompt=1).images[0]
-
-"""--------Image to Image Pipeline----------"""
-
-base = StableDiffusionXLPipeline.from_pretrained(
-    model="stabilityai/sdxl-turbo",
-    device_map="auto",
-    torch_dtype=torch.float16,
-    use_safetensors=True,
-    variant="fp16")
-
-refiner = StableDiffusionXLPipeline.from_pretrained(
-    model= "stabilityai/stable-diffusion-xl-refiner-1.0",
-    device_map="auto",
+# Load the models
+base_model = StableDiffusionXLPipeline.from_pretrained(
+    "stabilityai/sdxl-turbo",
+    device_map="balanced",
     torch_dtype=torch.float16,
     use_safetensors=True,
     variant="fp16"
 )
 
-init_image = load_image(image="") # original image
+refiner_model = StableDiffusionXLPipeline.from_pretrained(
+    "stabilityai/stable-diffusion-xl-refiner-1.0",
+    device_map="balanced",
+    torch_dtype=torch.float16,
+    use_safetensors=True,
+    variant="fp16"
+)
 
-prompt = ""
+def text_to_image(prompt, num_images, num_inference_steps, strength, guidance_scale):
+    images = base_model(
+        prompt,
+        num_inference_steps=num_inference_steps,
+        guidance_scale=guidance_scale,
+        strength=strength,
+        num_images_per_prompt=num_images
+    ).images
+    return images[0], images, f"Generated image(s) for prompt: {prompt}"
 
-imageToImage = base(prompt,
-                    image=init_image,
-                    num_inference_steps=75, # how many steps the model takes to make the image higher quality, takes longer for inference higher the number
-                    strength=0.3, # more noise that gets added to the image or how much the image gets changed
-                    guidance_scale=0.3,  # How close the image should be to the original
-                    denoising_end=.75,
-                    num_images_per_prompt=3, # how many images get generated
-                    output_type="latent"
-                    ).images[0]
-imageToImage = refiner(prompt,
-                       image=imageToImage,
-                       num_inference_steps=75,
-                       strength=.3,
-                       guidance_scale=0.3,
-                       denoising_start=.75,
-                       num_images_per_prompt=3
-                       ).images[0]
+def image_to_image(init_image, prompt, num_images, num_inference_steps, strength, guidance_scale):
+    base_output = base_model(
+        prompt,
+        image=init_image,
+        num_inference_steps=num_inference_steps,
+        strength=strength,
+        guidance_scale=guidance_scale,
+        denoising_end=0.75,
+        num_images_per_prompt=num_images,
+        output_type="latent"
+    ).images
+
+    refined_images = refiner_model(
+        prompt,
+        image=base_output,
+        num_inference_steps=num_inference_steps,
+        strength=strength,
+        guidance_scale=guidance_scale,
+        denoising_start=0.75,
+        num_images_per_prompt=num_images
+    ).images
+
+    return refined_images[0], refined_images, f"Generated image(s) for prompt: {prompt}"
