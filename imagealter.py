@@ -23,25 +23,37 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
 
     with gr.Tab("Text to Image"):
         with gr.Row():
-            with gr.Column(scale=2, show_progress=True, variant="compact"):
-                num_images = gr.Slider(minimum=1, maximum=5, value=3, step=1,
-                                       label="Number of Images to Generate",
-                                       info="How many images you want the model to generate.",
-                                       interactive=True)
-                num_inference_steps = gr.Slider(minimum=1, maximum=24, value=4, step=1,
-                                                label="Number of Inference Steps",
-                                                info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number",
-                                                interactive=True)
-                guidance_scale = gr.Slider(minimum=0.0, maximum=5, value=0.0, step=0.1,
-                                           label="Guidance Scale",
-                                           info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt.",
+            with gr.Column(scale=100, variant="compact"):
+                chatbot = gr.Chatbot(height="30vh",
+                                     show_label=False,
+                                     show_copy_button=True)
+                prompt = gr.Textbox(label="Image Prompt",
+                                    placeholder="Enter image prompt...")
+                with gr.Accordion(label="Advanced Settings"):
+                    num_images = gr.Slider(minimum=1, maximum=5, value=3, step=1,
+                                           label="Number of Images to Generate",
+                                           info="How many images you want the model to generate.",
                                            interactive=True)
-                chatbot = gr.Chatbot(height="44.5vh", show_label=False)
-                prompt = gr.Textbox(label="Image Prompt", placeholder="Enter image prompt...")
-
-            with gr.Column(scale=4, show_progress=True):
+                    num_inference_steps = gr.Slider(minimum=1, maximum=24, value=4, step=1,
+                                                    label="Number of Inference Steps",
+                                                    info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number",
+                                                    interactive=True)
+                    guidance_scale = gr.Slider(minimum=0.0, maximum=5, value=0.0, step=0.1,
+                                               label="Guidance Scale",
+                                               info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt.",
+                                               interactive=True)
+                    height = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
+                                       label="Height",
+                                       info="Height of the generated Image",
+                                       interactive=True)
+                    width = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
+                                      label="Height",
+                                      info="Height of the generated Image",
+                                      interactive=True)
+            gr.Column(scale=1)
+            with gr.Column(scale=126, show_progress=True):
                 gr.Markdown("## <center>Output Image</center>")
-                output_image = gr.Image(height="70vh",
+                output_image = gr.Image(height="60vh",
                                         show_label=False,
                                         interactive=False,
                                         show_download_button=True,
@@ -50,7 +62,7 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
         gr.Markdown("# <center>Output Image Gallery</center>")
         output_gallery = gr.Gallery(height="auto",
                                     rows=[6],
-                                    columns=[3],
+                                    columns=[num_images.value],
                                     show_download_button=True,
                                     show_fullscreen_button=True,
                                     label="Output Image Gallery",
@@ -59,8 +71,8 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
                                     interactive=False)
 
 
-        def process_text_to_image(prompt, num_images, num_inference_steps, guidance_scale, history, gallery):
-            single_image, new_images, new_history = text_to_image(prompt, num_images, num_inference_steps, guidance_scale)
+        def process_text_to_image(prompt, height, width, num_images, num_inference_steps, guidance_scale, history, gallery):
+            single_image, new_images, new_history = text_to_image(prompt, height, width, num_images, num_inference_steps, guidance_scale)
             updated_history = history + new_history
             updated_gallery = gallery + new_images
             return single_image, updated_gallery, updated_history, updated_gallery
@@ -68,7 +80,7 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
 
         prompt.submit(
             fn=process_text_to_image,
-            inputs=[prompt, num_images, num_inference_steps, guidance_scale, chatbot, text_to_image_gallery],
+            inputs=[prompt, height, width, num_images, num_inference_steps, guidance_scale, chatbot, text_to_image_gallery],
             outputs=[output_image, output_gallery, chatbot, text_to_image_gallery]
         ).then(
             fn=update_chatbot,
