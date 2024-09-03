@@ -16,8 +16,6 @@ def update_chatbot(history, user_message):
 with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as demo:
     gr.Markdown("# <center>Image Alter</center>")
     gr.Markdown("### <center>This app is used to create and edit images using Stable Diffusion.</center>")
-
-    # State variables to store accumulated images
     text_to_image_gallery = gr.State([])
     image_to_image_gallery = gr.State([])
 
@@ -99,7 +97,6 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
             with gr.Column(scale=4, show_progress=True):
                 gr.Markdown("## <center>Input Image</center>")
                 input_image = gr.Image(height="50vh", show_label=False)
-
             with gr.Column(scale=3, show_progress=True, variant="compact"):
                 i2i_chatbot = gr.Chatbot(height="25.5vh", show_label=False)
                 i2i_prompt = gr.Textbox(label="Image Prompt", placeholder="Enter image edit prompt...", autoscroll=True)
@@ -129,7 +126,7 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
                                           info="Width of the generated Image.",
                                           interactive=True)
             with gr.Column(scale=4, show_progress=True):
-                gr.Markdown("## <center>Output Image</center>")
+                gr.Markdown("## <center>Output Image(s)</center>")
                 i2i_output_image = gr.Gallery(height="50vh",
                                               rows=[1],
                                               columns=[i2i_num_images.value],
@@ -153,7 +150,7 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
 
         def process_image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale,
                                    history, gallery):
-            single_image, new_images, new_history = image_to_image(prompt, height, width, init_image, num_images, num_inference_steps, guidance_scale)
+            single_image, new_images, new_history = image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale)
             updated_history = history + new_history
             updated_gallery = gallery + new_images
             return single_image, updated_gallery, updated_history, updated_gallery
