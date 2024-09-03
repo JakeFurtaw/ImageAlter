@@ -84,7 +84,7 @@ def text_to_image(prompt, height, width, num_images, num_inference_steps, guidan
         num_inference_steps=num_inference_steps,
         guidance_scale=guidance_scale,
         max_sequence_length=256,
-        generator=torch.Generator("cuda:1").manual_seed(seed=seed)
+        generator=torch.Generator("cuda:1").manual_seed(seed)
     ).images
     return images, images, [(None, f"Generated image(s) for prompt: {prompt}")]
 
