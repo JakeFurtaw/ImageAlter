@@ -1,6 +1,8 @@
 # Image Alter
 
-Image Alter is a Gradio-based web application that allows users to create and edit images using advanced AI models. The app provides two main functionalities: Text-to-Image generation and Image-to-Image transformation, powered by state-of-the-art Stable Diffusion models.
+Image Alter is a Gradio-based web application that allows users to create and edit images using advanced AI models. 
+The app provides two main functionalities: Text-to-Image generation and Image-to-Image transformation, powered by 
+state-of-the-art Stable Diffusion models.
 
 ## Features
 
@@ -69,7 +71,6 @@ python imagealter.py
 
 - `imagealter.py`: Main Gradio application file
 - `utils.py`: Utility functions for image generation and transformation
-- `README.md`: This file, containing project information and instructions
 
 ## Contributing
 
@@ -77,8 +78,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## Acknowledgements
 
-This project uses the FLUX.1-schnell model from Black Forest Labs and the Stable Diffusion XL Refiner model from Stability AI.
+This project uses the FLUX.1-schnell model from Black Forest Labs and the Stable Diffusion XL Refiner model 
+from Stability AI.
 
-## License
-
-[Include your license information here]
