@@ -75,7 +75,6 @@ refiner = StableDiffusionImg2ImgPipeline.from_pretrained(
 
 
 def text_to_image(prompt, height, width, num_images, num_inference_steps, guidance_scale, seed):
-    #TODO add seed slider???
     images = flux(
         prompt=prompt + "Make this image super high quality, a masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
         height=height,
@@ -92,7 +91,7 @@ def text_to_image(prompt, height, width, num_images, num_inference_steps, guidan
 def image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale):
     # TODO fix image input to make input image work
     img = Image.fromarray(init_image.astype('uint8'), 'RGB').resize((height, width), Image.Resampling.LANCZOS)  # Maybe try BICUBIC or HAMMING
-    seed = random.randint(0, MAX_SEED)  #TODO add seed slider???
+    seed = random.randint(0, MAX_SEED)
     i2i_output = refiner(
         prompt=prompt + "Make this image best quality, masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
         image=img,
