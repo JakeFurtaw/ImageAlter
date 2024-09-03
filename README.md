@@ -42,7 +42,7 @@ pip install gradio torch diffusers transformers
 
 3. Run the Gradio app:
 ```
-python imagealter.py
+gradio imagealter.py
 ```
 
 4. The app will automatically open in your default web browser.
