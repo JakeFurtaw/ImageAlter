@@ -16,7 +16,7 @@ state-of-the-art Stable Diffusion models.
 - View generated images in an interactive gallery
 - Accumulate generated images in an output gallery
 
-### Image-to-Image Transformation
+### Image-to-Image Transformation (Work In Progress)
 - Edit existing images using text prompts
 - Customize transformation parameters (same as Text-to-Image)
 - View transformed images in an interactive gallery
