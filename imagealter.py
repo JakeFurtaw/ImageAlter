@@ -116,7 +116,7 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
                                            label="Number of Images to Generate",
                                            info="How many images you want the model to generate.",
                                            interactive=True)
-                    i2i_num_inference_steps = gr.Slider(minimum=1, maximum=24, value=4, step=1,
+                    i2i_num_inference_steps = gr.Slider(minimum=6, maximum=500, value=4, step=1,
                                                         label="Number of Inference Steps",
                                                         info="Selected how many steps the model takes to make the image "
                                                          "higher quality. Takes longer for inference higher you "
@@ -157,7 +157,6 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
                                         show_label=False,
                                         object_fit="contain",
                                         interactive=False)
-
 
         def process_image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale,
                                    history, gallery):
