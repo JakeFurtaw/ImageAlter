@@ -15,7 +15,7 @@ refiner = DiffusionPipeline.from_pretrained(
     "stabilityai/stable-diffusion-xl-refiner-1.0",
     device_map="balanced",
     torch_dtype=torch.bfloat16,
-    use_safetensors=True,
+    use_safetensors=True
 )
 
 
