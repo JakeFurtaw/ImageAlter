@@ -47,7 +47,7 @@ def image_to_image(prompt, init_image, height, width, num_images, num_inference_
         height=height,
         width=width,
         num_images_per_prompt=num_images,
-        num_inference_steps=num_inference_steps,
+        num_inference_steps=num_inference_steps, #TODO fix inference step to make it work properly
         guidance_scale=guidance_scale,
         max_sequence_length=256,
         generator=torch.Generator("cuda").manual_seed(seed)
