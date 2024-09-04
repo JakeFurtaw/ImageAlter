@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 from PIL import Image
-from diffusers import FluxPipeline, DiffusionPipeline
+from diffusers import FluxPipeline, DiffusionPipeline, FlaxStableDiffusionImg2ImgPipeline
 import random
 
 MAX_SEED = np.iinfo(np.int32).max
@@ -57,6 +57,6 @@ def image_to_image(prompt, init_image, height, width, num_images, num_inference_
         num_inference_steps=(num_inference_steps*3),  #TODO fix inference step to make it work properly
         guidance_scale=guidance_scale,  #Also called CFG
         max_sequence_length=256,
-        generator=torch.Generator("cuda").manual_seed(seed)
+        generator=torch.Generator("cuda:1").manual_seed(seed)
     ).images
     return i2i_output, i2i_output

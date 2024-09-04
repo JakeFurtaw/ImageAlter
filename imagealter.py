@@ -57,7 +57,7 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                                                             label="Number of Inference Steps",
                                                             info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number.",
                                                             interactive=True)
-                            guidance_scale = gr.Slider(minimum=0.0, maximum=5, value=0.0, step=0.1,
+                            guidance_scale = gr.Slider(minimum=0.1, maximum=10, value=0.1, step=0.1,
                                                        label="Guidance Scale",
                                                        info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt but will loose image quality.",
                                                        interactive=True)
@@ -134,7 +134,7 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                                                                     label="Number of Inference Steps",
                                                                     info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number.",
                                                                     interactive=True)
-                                i2i_guidance_scale = gr.Slider(minimum=0.0, maximum=5, value=0.0, step=0.1,
+                                i2i_guidance_scale = gr.Slider(minimum=0.1, maximum=10, value=0.1, step=0.1,
                                                                label="Guidance Scale",
                                                                info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt but will loose image quality.",
                                                                interactive=True)
