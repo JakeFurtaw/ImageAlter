@@ -27,6 +27,7 @@ refiner = DiffusionPipeline.from_pretrained(
 
 
 def text_to_image(prompt, height, width, num_images, num_inference_steps, guidance_scale, seed):
+    torch.cuda.empty_cache()
     seed = random.randint(0, MAX_SEED) if seed == 0 else seed
     images = flux(
         prompt=prompt + "Make this image super high quality, a masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
@@ -38,13 +39,14 @@ def text_to_image(prompt, height, width, num_images, num_inference_steps, guidan
         max_sequence_length=256,
         generator=torch.Generator("cuda:1").manual_seed(seed)
     ).images
-    return images, images, [(None, f"Generated image(s) for prompt: {prompt}")]
+    return images, images
 
 
-def image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale):
+def image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale, seed):
+    torch.cuda.empty_cache()
     # TODO fix image input to make input image work
     img = Image.fromarray(init_image.astype('uint8'), 'RGB').resize((height, width), Image.Resampling.LANCZOS)  # Maybe try BICUBIC or HAMMING
-    seed = random.randint(0, MAX_SEED)
+    seed = random.randint(0, MAX_SEED) if seed == 0 else seed
     i2i_output = refiner(
         prompt=prompt + "Make this image best quality, masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
         image=img,
@@ -57,4 +59,4 @@ def image_to_image(prompt, init_image, height, width, num_images, num_inference_
         max_sequence_length=256,
         generator=torch.Generator("cuda").manual_seed(seed)
     ).images
-    return i2i_output, i2i_output, [(None, f"Generated image(s) for prompt: {prompt}")]
+    return i2i_output, i2i_output
