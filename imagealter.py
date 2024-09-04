@@ -41,10 +41,10 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                                           show_fullscreen_button=True)
                 prompt = gr.Textbox(label="Image Prompt",
                                     placeholder="Enter image prompt...",)
-                gr.Examples(examples=["Can you generate me an image of an astronaut in a blue space suit on the moon with an alien space rifle in his hands and the sun in the background?",
-                                      "Can you generate me an image of a flying car that is being operated by a pink unicorn on a dark night with stars in the sky?",
-                                      "Can you generate me an image of a person wearing a blue swimsuit, riding a mountain bike in a park with a dragon flying over top of them and snow mountains in the background?",
-                                      "Can you generate me an image of a soldier in a orange wetsuit with a musket in their hands on a raft in the middle of the ocean?"], inputs=prompt)
+                gr.Examples(examples=["Can you generate an image of an astronaut in a blue space suit on the moon with an alien-looking plasma rifle in his hands and the sun in the background?",
+                                      "Can you generate an image of a flying car operated by a pink unicorn at night with stars in the sky?",
+                                      "Can you generate an image of a person wearing a blue swimsuit, riding a mountain bike in a park with a dragon flying over the top of them and snowy mountains in the background?",
+                                      "Can you generate an image of a soldier in an orange wetsuit with a musket in their hands on a raft in the middle of the ocean?"], inputs=prompt)
                 with gr.Accordion(label="Advanced Settings", open=False):
                     with gr.Row():
                         with gr.Column(scale=1):
