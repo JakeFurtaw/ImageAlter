@@ -79,7 +79,7 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
         gr.Markdown('<h1 class="custom-title-two"><center>Output Image Gallery</center></h1>')
         output_gallery = gr.Gallery(height="auto",
                                     rows=[10],
-                                    columns=[num_images.value],
+                                    columns=[5],
                                     show_download_button=True,
                                     show_fullscreen_button=True,
                                     label="Output Image Gallery",
@@ -155,7 +155,7 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
         gr.Markdown('<h1 class="custom-title-two"><center>Output Image Gallery</center></h1>')
         i2i_output_gallery = gr.Gallery(height="auto",
                                         rows=[10],
-                                        columns=[i2i_num_images.value],
+                                        columns=[5],
                                         show_download_button=True,
                                         show_fullscreen_button=True,
                                         preview=True,
