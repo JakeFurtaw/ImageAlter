@@ -9,10 +9,10 @@ css = """
     background: radial-gradient(#416e8a, #000000);
 }
 .custom-title {
-    font-size: 75px;
+    font-size: 60px;
 }
 .custom-title-two {
-    font-size: 60px;
+    font-size: 50px;
     margin-top: 40px;
 }
 """

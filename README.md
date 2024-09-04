@@ -1,8 +1,13 @@
 # Image Alter
 
-Image Alter is a Gradio-based web application that allows users to create and edit images using advanced AI models. 
-The app provides two main functionalities: Text-to-Image generation and Image-to-Image transformation, powered by 
-state-of-the-art Stable Diffusion models.
+Image Alter is a cutting-edge Gradio-based web application that empowers users to create and edit images using advanced 
+Stable Diffusion models. Leveraging state-of-the-art AI technology, including the Flux model by Black Forest Labs 
+and Stable Diffusion XL Refiner 1.0 by Stability AI, the app offers two primary functionalities: Text-to-Image 
+generation and Image-to-Image transformation. With its intuitive interface, Image Alter allows users to 
+transform text prompts into stunning visuals and enhance existing images with AI-driven alterations. 
+Whether you're a professional designer, a digital artist, or an enthusiast exploring AI-generated imagery, 
+Image Alter provides a powerful platform to bring your creative visions to life, pushing the boundaries of 
+digital image manipulation.
 
 ## Features
 
@@ -10,21 +15,23 @@ state-of-the-art Stable Diffusion models.
 - Create images from text prompts
 - Customize generation parameters:
   - Number of images (1-5)
-  - Number of inference steps (1-24)
+  - Number of inference steps (1-124)
   - Guidance scale (0.0-5.0)
   - Image height and width (256-2048 pixels)
+  - Seed value (0-2147483647, 0 for random seed)
 - View generated images in an interactive gallery
 - Accumulate generated images in an output gallery
+- Example prompts provided for inspiration
 
 ### Image-to-Image Transformation (Work In Progress)
 - Edit existing images using text prompts
-- Customize transformation parameters (same as Text-to-Image)
+- Customize transformation parameters (similar to Text-to-Image)
 - View transformed images in an interactive gallery
 - Accumulate transformed images in an output gallery
 
 ### User Interface
 - Tabbed interface for easy navigation between Text-to-Image and Image-to-Image modes
-- Chatbot-style interaction for prompts and responses
+- Responsive design with radial gradient background
 - Advanced settings accordion for fine-tuning generation parameters
 - Responsive image galleries with download and fullscreen options
 
@@ -37,7 +44,7 @@ git clone https://github.com/JakeFurtaw/ImageAlter.git
 
 2. Install the required dependencies:
 ```
-pip install gradio torch diffusers transformers
+pip install gradio torch diffusers transformers pillow numpy
 ```
 
 3. Run the Gradio app:
@@ -51,9 +58,10 @@ gradio imagealter.py
 
 ### Text to Image
 1. Enter a text prompt in the "Image Prompt" field
-2. Adjust the generation parameters in the "Advanced Settings" accordion (optional)
-3. Press Enter or click Submit to generate images
-4. View the generated images in the output gallery and accumulated gallery
+2. (Optional) Use one of the provided example prompts
+3. Adjust the generation parameters in the "Advanced Settings" accordion (optional)
+4. Press Enter or click Submit to generate images
+5. View the generated images in the output gallery and accumulated gallery
 
 ### Image to Image
 1. Upload an input image to the left input section
