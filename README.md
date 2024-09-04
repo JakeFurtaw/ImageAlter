@@ -15,7 +15,7 @@ digital image manipulation.
 - Customize generation parameters:
   - Number of images (1-5)
   - Number of inference steps (1-124)
-  - Guidance scale (0.0-5.0)
+  - Guidance scale (0.0-10.0)
   - Image height and width (256-2048 pixels)
   - Seed value (0-2147483647, 0 for random seed)
 - View generated images in an interactive gallery
