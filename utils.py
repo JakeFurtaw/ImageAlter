@@ -2,7 +2,6 @@ import numpy as np
 import torch
 from PIL import Image
 from diffusers import FluxPipeline, DiffusionPipeline
-
 import random
 
 MAX_SEED = np.iinfo(np.int32).max
@@ -28,6 +27,7 @@ refiner = DiffusionPipeline.from_pretrained(
 
 
 def text_to_image(prompt, height, width, num_images, num_inference_steps, guidance_scale, seed):
+    seed = random.randint(0, MAX_SEED) if seed == 0 else seed
     images = flux(
         prompt=prompt + "Make this image super high quality, a masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
         height=height,

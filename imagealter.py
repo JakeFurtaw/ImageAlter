@@ -23,45 +23,46 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
     image_to_image_gallery = gr.State([])
 
     with gr.Tab("Text to Image"):
-        with gr.Row(show_progress=False):
+        with gr.Row():
             with gr.Column(scale=1, variant="compact"):
                 chatbot = gr.Chatbot(height="30vh",
                                      show_label=False,
                                      show_copy_button=True)
                 prompt = gr.Textbox(label="Image Prompt",
                                     placeholder="Enter image prompt...")
-                with gr.Accordion(label="Advanced Settings"):
-                    with gr.Row():
-                        with gr.Column(scale=2):
-                            num_images = gr.Slider(minimum=1, maximum=5, value=3, step=1,
-                                                   label="Number of Images to Generate",
-                                                   info="How many images you want the model to generate.",
-                                                   interactive=True)
-                            num_inference_steps = gr.Slider(minimum=1, maximum=124, value=4, step=1,
-                                                            label="Number of Inference Steps",
-                                                            info="Selected how many steps the model takes to make the image "
-                                                                 "higher quality. Takes longer for inference higher you "
-                                                                 "make the number.",
-                                                            interactive=True)
-                            guidance_scale = gr.Slider(minimum=0.0, maximum=5, value=0.0, step=0.1,
-                                                       label="Guidance Scale",
-                                                       info="How closely the image should follow the prompt. Higher values "
-                                                            "make the image more closely follow the prompt but will loose image"
-                                                            " quality.",
-                                                       interactive=True)
-                        with gr.Column(scale=2):
-                            height = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
-                                               label="Height",
-                                               info="Height of the generated Image.",
+            with gr.Column(scale=1, variant="compact"):
+                with gr.Row():
+                    with gr.Column(scale=2):
+                        num_images = gr.Slider(minimum=1, maximum=5, value=3, step=1,
+                                               label="Number of Images to Generate",
+                                               info="How many images you want the model to generate.",
                                                interactive=True)
-                            width = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
-                                              label="Width",
-                                              info="Width of the generated Image.",
-                                              interactive=True)
-                            seed = gr.Slider(minimum=0, maximum=MAX_SEED, value=0, step=1,
-                                              label="Seed",
-                                              info="Select a seed for the image to be generated from. Make sure you pick a good one!",
-                                              interactive=True)
+                        num_inference_steps = gr.Slider(minimum=1, maximum=124, value=4, step=1,
+                                                        label="Number of Inference Steps",
+                                                        info="Selected how many steps the model takes to make the image "
+                                                             "higher quality. Takes longer for inference higher you "
+                                                             "make the number.",
+                                                        interactive=True)
+                        guidance_scale = gr.Slider(minimum=0.0, maximum=5, value=0.0, step=0.1,
+                                                   label="Guidance Scale",
+                                                   info="How closely the image should follow the prompt. Higher values "
+                                                        "make the image more closely follow the prompt but will loose image"
+                                                        " quality.",
+                                                   interactive=True)
+                        height = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
+                                           label="Height",
+                                           info="Height of the generated Image.",
+                                           interactive=True)
+                        width = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
+                                          label="Width",
+                                          info="Width of the generated Image.",
+                                          interactive=True)
+                        seed = gr.Slider(minimum=0, maximum=MAX_SEED, value=0, step=1,
+                                          label="Seed",
+                                          info="Select a seed for the image to be generated from. Make sure you "
+                                               "pick a good one! If you leave seed set to 0 a random seed will be "
+                                               "chosen.",
+                                          interactive=True)
             with gr.Column(scale=3, show_progress=True):
                 gr.Markdown("## <center>Output Image(s)</center>")
                 output_image = gr.Gallery(height="auto",
@@ -72,7 +73,6 @@ with gr.Blocks(title="Image Alter",theme="default", fill_width=True, css=css) as
                                           object_fit="contain",
                                           show_download_button=True,
                                           show_fullscreen_button=True)
-
         gr.Markdown("# <center>Output Image Gallery</center>")
         output_gallery = gr.Gallery(height="auto",
                                     rows=[10],
