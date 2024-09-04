@@ -17,6 +17,9 @@ css = """
 }
 """
 
+def update_gallery_columns(num_images):
+    return gr.update(columns=num_images)
+
 with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) as demo:
     gr.Markdown('<h1 class="custom-title"><center>Image Alter</center></h1>')
     gr.Markdown("## <center>Image Alter is a Gradio-based web application that allows users to create and edit images "
@@ -30,7 +33,7 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                 gr.Markdown("## <center>Output Image(s)</center>")
                 output_image = gr.Gallery(height="50vh",
                                           rows=[1],
-                                          columns=[num_images.value],
+                                          columns=[3],
                                           show_label=False,
                                           interactive=False,
                                           object_fit="contain",
@@ -49,6 +52,7 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                                                    label="Number of Images to Generate",
                                                    info="How many images you want the model to generate.",
                                                    interactive=True)
+                            num_images.change(fn=update_gallery_columns, inputs=num_images, outputs=output_image)
                             num_inference_steps = gr.Slider(minimum=1, maximum=124, value=4, step=1,
                                                             label="Number of Inference Steps",
                                                             info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number.",
@@ -81,15 +85,7 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                                     label="Output Image Gallery",
                                     show_label=False,
                                     object_fit="contain",
-                                    interactive=False, )
-
-        def update_output_image_columns(num):
-            return gr.Gallery(height="50vh", rows=[1], columns=[num])
-        num_images.change(
-            fn=update_output_image_columns,
-            inputs=[num_images],
-            outputs=[output_image]
-        )
+                                    interactive=False)
 
 
         def process_text_to_image(prompt, height, width, num_images, num_inference_steps, guidance_scale, seed, gallery):
@@ -117,7 +113,7 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                     gr.Markdown("## <center>Output Image(s)</center>")
                     i2i_output_image = gr.Gallery(height="50vh",
                                                   rows=[1],
-                                                  columns=[i2i_num_images.value],
+                                                  columns=[3],
                                                   object_fit="contain",
                                                   show_fullscreen_button=True,
                                                   show_label=False,
@@ -132,6 +128,8 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                                                        label="Number of Images to Generate",
                                                        info="How many images you want the model to generate.",
                                                        interactive=True)
+                                i2i_num_images.change(fn=update_gallery_columns, inputs=i2i_num_images,
+                                                      outputs=i2i_output_image)
                                 i2i_num_inference_steps = gr.Slider(minimum=6, maximum=500, value=4, step=1,
                                                                     label="Number of Inference Steps",
                                                                     info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number.",
