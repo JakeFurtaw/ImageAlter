@@ -17,8 +17,8 @@ css = """
 }
 """
 
-def update_gallery_columns(num_images):
-    return gr.update(columns=num_images)
+def update_gallery_columns(num):
+    return gr.update(columns=num)
 
 with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) as demo:
     gr.Markdown('<h1 class="custom-title"><center>Image Alter</center></h1>')
