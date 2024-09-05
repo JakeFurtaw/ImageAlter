@@ -53,7 +53,7 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                                                    info="How many images you want the model to generate.",
                                                    interactive=True)
                             num_images.change(fn=update_gallery_columns, inputs=num_images, outputs=output_image)
-                            num_inference_steps = gr.Slider(minimum=1, maximum=124, value=4, step=1,
+                            num_inference_steps = gr.Slider(minimum=1, maximum=124, value=24, step=1,
                                                             label="Number of Inference Steps",
                                                             info="Selected how many steps the model takes to make the "
                                                                  "image higher quality. Takes longer for inference "
