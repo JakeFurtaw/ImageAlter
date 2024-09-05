@@ -24,7 +24,7 @@ def text_to_image(prompt, height, width, num_images, num_inference_steps, guidan
     torch.cuda.empty_cache()
     seed = random.randint(0, MAX_SEED) if seed == 0 else seed
     images = flux(
-        prompt=prompt + "Make this image super high quality, a masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
+        prompt=prompt + " Make this image super high quality, a masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
         height=height,
         width=width,
         num_images_per_prompt=num_images,
@@ -39,17 +39,17 @@ def text_to_image(prompt, height, width, num_images, num_inference_steps, guidan
 def image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale, seed):
     torch.cuda.empty_cache()
     # TODO fix image input to make input image work
-    img = Image.fromarray(init_image.astype('uint8'), 'RGB').resize((height, width), Image.Resampling.LANCZOS)  # Maybe try BICUBIC or HAMMING
+    input_img = Image.fromarray(init_image.astype('uint8'), 'RGB').resize((height, width), Image.Resampling.LANCZOS)  # Maybe try BICUBIC or HAMMING
     seed = random.randint(0, MAX_SEED) if seed == 0 else seed
-    i2i_output = flux(
+    altered_image = flux(
         prompt=prompt + "Make this image best quality, masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
-        image=img,
+        image=input_img,
         height=height,
         width=width,
         num_images_per_prompt=num_images,
         num_inference_steps=num_inference_steps,  #TODO fix inference step to make it work properly
         guidance_scale=guidance_scale,  #Also called CFG
         max_sequence_length=256,
-        generator=torch.Generator("cuda:1").manual_seed(seed)
+        generator=torch.Generator("cuda").manual_seed(seed)
     ).images
-    return i2i_output, i2i_output
+    return altered_image, altered_image
