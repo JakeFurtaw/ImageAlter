@@ -55,11 +55,15 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                             num_images.change(fn=update_gallery_columns, inputs=num_images, outputs=output_image)
                             num_inference_steps = gr.Slider(minimum=1, maximum=124, value=4, step=1,
                                                             label="Number of Inference Steps",
-                                                            info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number.",
+                                                            info="Selected how many steps the model takes to make the "
+                                                                 "image higher quality. Takes longer for inference "
+                                                                 "higher you make the number.",
                                                             interactive=True)
-                            guidance_scale = gr.Slider(minimum=0.1, maximum=10, value=0.1, step=0.1,
+                            guidance_scale = gr.Slider(minimum=0.1, maximum=100, value=8, step=0.1,
                                                        label="Guidance Scale",
-                                                       info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt but will loose image quality.",
+                                                       info="How closely the image should follow the prompt. Higher "
+                                                            "values make the image more closely follow the prompt, "
+                                                            "lower will let the model be creative.",
                                                        interactive=True)
                         with gr.Column(scale=1):
                             height = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,

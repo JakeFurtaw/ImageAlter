@@ -1,23 +1,40 @@
 import numpy as np
 import torch
 from PIL import Image
-from diffusers import FluxPipeline, DiffusionPipeline, FlaxStableDiffusionImg2ImgPipeline
+from diffusers import FluxPipeline, DiffusionPipeline, AutoencoderKL
+from transformers import CLIPTokenizer, CLIPTextModel
 import random
 
 MAX_SEED = np.iinfo(np.int32).max
 TORCH_DTYPE = torch.float16
-device="cuda"
 
 #SET MODELS HERE
-flux_model = "black-forest-labs/FLUX.1-schnell"
+flux_schnell = "black-forest-labs/FLUX.1-schnell"
+flux_dev = "black-forest-labs/FLUX.1-dev"
 sdxl = "stabilityai/stable-diffusion-xl-refiner-1.0"
 
 flux = FluxPipeline.from_pretrained(
-    flux_model,
+    flux_dev,
+    vae = AutoencoderKL.from_pretrained(
+        flux_dev,
+        subfolder="vae",
+        torch_dtype=TORCH_DTYPE
+    ).requires_grad_(False).to("cuda:1"),
+    tokenizer= CLIPTokenizer.from_pretrained(
+        flux_dev,
+        subfolder="tokenizer",
+        use_fast=True,
+        device="cuda:1"
+    ),
+    text_encoder=CLIPTextModel.from_pretrained(
+        flux_dev,
+        subfolder="text_encoder",
+        torch_dtype=TORCH_DTYPE
+    ).requires_grad_(False).to("cuda:1"),
     device_map="balanced",
     torch_dtype=TORCH_DTYPE,
-    use_safetensors=True
 )
+
 refiner = DiffusionPipeline.from_pretrained(
     sdxl,
     device_map="balanced",
@@ -30,7 +47,7 @@ def text_to_image(prompt, height, width, num_images, num_inference_steps, guidan
     torch.cuda.empty_cache()
     seed = random.randint(0, MAX_SEED) if seed == 0 else seed
     images = flux(
-        prompt=prompt + "Make this image super high quality, a masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
+        prompt + "Make this image super high quality, a masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
         height=height,
         width=width,
         num_images_per_prompt=num_images,
