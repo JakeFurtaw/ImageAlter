@@ -48,7 +48,7 @@ def image_to_image(prompt, init_image, height, width, num_images, num_inference_
     input_img = Image.fromarray(init_image.astype('uint8'), 'RGB').resize((height, width), Image.Resampling.LANCZOS)  # Maybe try BICUBIC or HAMMING
     seed = random.randint(0, MAX_SEED) if seed == 0 else seed
     altered_image = flux(
-        prompt=prompt + "Make this image best quality, masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
+        prompt=prompt + " Make this image super high quality, a masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
         image=input_img,
         height=height,
         width=width,
