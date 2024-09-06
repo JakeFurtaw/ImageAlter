@@ -45,7 +45,13 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                                       "Can you generate an image of a flying car operated by a pink unicorn at night with stars in the sky?",
                                       "Can you generate an image of a person wearing a blue swimsuit, riding a mountain bike in a park with a dragon flying over the top of them and snowy mountains in the background?",
                                       "Can you generate an image of a soldier in an orange wetsuit with a musket in their hands on a raft in the middle of the ocean?"], inputs=prompt)
-                with gr.Accordion(label="Advanced Settings", open=False):
+                model_list = gr.Dropdown(label="Model List",
+                                         info="Choose a Stable Diffusion Model from the list.",
+                                         value="Flux Schnell",
+                                         interactive=True,
+                                         choices=["Flux Schnell","Flux Dev","Flux Dev_Shakker Labs Finetune"])
+                with gr.Accordion(label="Advanced Settings",
+                                  open=False):
                     with gr.Row():
                         with gr.Column(scale=1):
                             num_images = gr.Slider(minimum=1, maximum=5, value=3, step=1,
@@ -176,9 +182,9 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                                         interactive=False)
 
         def process_image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale, seed, gallery):
-            single_image, new_images, _ = image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale, seed)
+            new_images, _ = image_to_image(prompt, init_image, height, width, num_images, num_inference_steps, guidance_scale, seed)
             updated_gallery = gallery + new_images
-            return single_image, updated_gallery, updated_gallery
+            return new_images, updated_gallery, updated_gallery
 
         i2i_prompt.submit(
             fn=process_image_to_image,

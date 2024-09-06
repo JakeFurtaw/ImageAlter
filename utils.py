@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 from PIL import Image
-from diffusers import FluxPipeline, AutoencoderKL
+from diffusers import FluxPipeline, StableDiffusionInstructPix2PixPipeline, AutoencoderKL
 from transformers import CLIPTokenizer, CLIPTextModel
 import random
 
@@ -13,23 +13,29 @@ flux_schnell = "black-forest-labs/FLUX.1-schnell"
 flux_dev = "black-forest-labs/FLUX.1-dev"
 flux_dev_shakker_labs = "Shakker-Labs/AWPortrait-FL"
 
+pix2pix = "timbrooks/instruct-pix2pix"
+
 
 # Text to Image Pipeline
-flux = FluxPipeline.from_pretrained(
+text_2_image = FluxPipeline.from_pretrained(
     flux_dev,
-    variant="fp16",
     device_map="balanced",
     torch_dtype=TORCH_DTYPE,
 )
 
 # Image to Image Pipeline
-
+image_2_image = StableDiffusionInstructPix2PixPipeline.from_pretrained(
+    pix2pix,
+    variant="fp16",
+    device_map="balanced",
+    torch_dtype=TORCH_DTYPE
+)
 
 
 def text_to_image(prompt, height, width, num_images, num_inference_steps, guidance_scale, seed):
     torch.cuda.empty_cache()
     seed = random.randint(0, MAX_SEED) if seed == 0 else seed
-    images = flux(
+    images = text_2_image(
         prompt=prompt + " Make this image super high quality, a masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
         height=height,
         width=width,
@@ -47,7 +53,7 @@ def image_to_image(prompt, init_image, height, width, num_images, num_inference_
     # TODO fix image input to make input image work
     input_img = Image.fromarray(init_image.astype('uint8'), 'RGB').resize((height, width), Image.Resampling.LANCZOS)  # Maybe try BICUBIC or HAMMING
     seed = random.randint(0, MAX_SEED) if seed == 0 else seed
-    altered_image = flux(
+    altered_image = image_2_image(
         prompt=prompt + " Make this image super high quality, a masterpiece, ultra-detailed, high quality photography, photo realistic, 8k, DSLR.",
         image=input_img,
         height=height,
