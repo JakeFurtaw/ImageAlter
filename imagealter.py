@@ -53,11 +53,11 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                                                    info="How many images you want the model to generate.",
                                                    interactive=True)
                             num_images.change(fn=update_gallery_columns, inputs=num_images, outputs=output_image)
-                            num_inference_steps = gr.Slider(minimum=1, maximum=124, value=24, step=1,
+                            num_inference_steps = gr.Slider(minimum=1, maximum=100, value=24, step=1,
                                                             label="Number of Inference Steps",
-                                                            info="Selected how many steps the model takes to make the "
-                                                                 "image higher quality. Takes longer for inference "
-                                                                 "higher you make the number.",
+                                                            info="Selected how many denoising steps the model takes to "
+                                                                 "make the image higher quality. Takes longer for "
+                                                                 "inference higher you make the number.",
                                                             interactive=True)
                             guidance_scale = gr.Slider(minimum=0.1, maximum=100, value=8, step=0.1,
                                                        label="Guidance Scale",
@@ -76,7 +76,9 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                                               interactive=True)
                             seed = gr.Slider(minimum=0, maximum=MAX_SEED, value=0, step=1,
                                              label="Seed",
-                                             info="Select a seed for the image to be generated from. Make sure you pick a good one! If you leave seed set to 0 a random seed will be chosen.",
+                                             info="Select a seed for the image to be generated from. Make sure you "
+                                                  "pick a good one! If you leave seed set to 0 a random seed will be "
+                                                  "chosen.",
                                              interactive=True)
             gr.Column(scale=2)
         gr.Tabs()
@@ -129,18 +131,21 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                         with gr.Row():
                             with gr.Column():
                                 i2i_num_images = gr.Slider(minimum=1, maximum=5, value=3, step=1,
-                                                       label="Number of Images to Generate",
-                                                       info="How many images you want the model to generate.",
-                                                       interactive=True)
-                                i2i_num_images.change(fn=update_gallery_columns, inputs=i2i_num_images,
-                                                      outputs=i2i_output_image)
-                                i2i_num_inference_steps = gr.Slider(minimum=6, maximum=500, value=4, step=1,
+                                                           label="Number of Images to Generate",
+                                                           info="How many images you want the model to generate.",
+                                                           interactive=True)
+                                i2i_num_images.change(fn=update_gallery_columns, inputs=i2i_num_images, outputs=i2i_output_image)
+                                i2i_num_inference_steps = gr.Slider(minimum=1, maximum=100, value=24, step=1,
                                                                     label="Number of Inference Steps",
-                                                                    info="Selected how many steps the model takes to make the image higher quality. Takes longer for inference higher you make the number.",
+                                                                    info="Selected how many denoising steps the model takes to "
+                                                                         "make the image higher quality. Takes longer for "
+                                                                         "inference higher you make the number.",
                                                                     interactive=True)
-                                i2i_guidance_scale = gr.Slider(minimum=0.1, maximum=10, value=0.1, step=0.1,
+                                i2i_guidance_scale = gr.Slider(minimum=0.1, maximum=100, value=8, step=0.1,
                                                                label="Guidance Scale",
-                                                               info="How closely the image should follow the prompt. Higher values make the image more closely follow the prompt but will loose image quality.",
+                                                               info="How closely the image should follow the prompt. Higher "
+                                                                    "values make the image more closely follow the prompt, "
+                                                                    "lower will let the model be creative.",
                                                                interactive=True)
                             with gr.Column():
                                 i2i_height = gr.Slider(minimum=256, maximum=2048, value=1024, step=256,
@@ -152,9 +157,11 @@ with gr.Blocks(title="Image Alter", theme="default", fill_width=True, css=css) a
                                                       info="Width of the generated Image.",
                                                       interactive=True)
                                 i2i_seed = gr.Slider(minimum=0, maximum=MAX_SEED, value=0, step=1,
-                                                    label="Seed",
-                                                    info="Select a seed for the image to be generated from. Make sure you pick a good one! If you leave seed set to 0 a random seed will be chosen.",
-                                                    interactive=True)
+                                                     label="Seed",
+                                                     info="Select a seed for the image to be generated from. Make sure you "
+                                                          "pick a good one! If you leave seed set to 0 a random seed will be "
+                                                          "chosen.",
+                                                     interactive=True)
         gr.Tabs()
         gr.Markdown('<h1 class="custom-title-two"><center>Output Image Gallery</center></h1>')
         i2i_output_gallery = gr.Gallery(height="auto",

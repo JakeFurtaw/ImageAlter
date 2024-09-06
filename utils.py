@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 from PIL import Image
-from diffusers import FluxPipeline, DiffusionPipeline, AutoencoderKL
+from diffusers import FluxPipeline, AutoencoderKL
 from transformers import CLIPTokenizer, CLIPTextModel
 import random
 
@@ -13,11 +13,17 @@ flux_schnell = "black-forest-labs/FLUX.1-schnell"
 flux_dev = "black-forest-labs/FLUX.1-dev"
 flux_dev_shakker_labs = "Shakker-Labs/AWPortrait-FL"
 
+
+# Text to Image Pipeline
 flux = FluxPipeline.from_pretrained(
     flux_dev,
+    variant="fp16",
     device_map="balanced",
     torch_dtype=TORCH_DTYPE,
 )
+
+# Image to Image Pipeline
+
 
 
 def text_to_image(prompt, height, width, num_images, num_inference_steps, guidance_scale, seed):
