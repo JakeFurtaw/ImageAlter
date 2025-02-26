@@ -13,8 +13,6 @@ flux_schnell = "black-forest-labs/FLUX.1-schnell"
 flux_dev = "black-forest-labs/FLUX.1-dev"
 flux_dev_shakker_labs = "Shakker-Labs/AWPortrait-FL"
 
-pix2pix = "timbrooks/instruct-pix2pix"
-
 
 # Text to Image Pipeline
 text_2_image = FluxPipeline.from_pretrained(
@@ -25,7 +23,7 @@ text_2_image = FluxPipeline.from_pretrained(
 
 # Image to Image Pipeline
 image_2_image = StableDiffusionInstructPix2PixPipeline.from_pretrained(
-    pix2pix,
+    flux_dev,
     variant="fp16",
     device_map="balanced",
     torch_dtype=TORCH_DTYPE
